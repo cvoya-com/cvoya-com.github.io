@@ -1,0 +1,16 @@
+{
+    "name": "cvoya-com.github.io",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Index of the code CVOYA publishes. Served at https://cvoya-com.github.io/.",
+    "scripts": {
+        "validate": "npm run lint:html && npm run lint:css",
+        "lint:html": "html-validate --config htmlvalidate.json index.html",
+        "lint:css": "stylelint --config stylelintrc.json styles.css"
+    },
+    "devDependencies": {
+        "html-validate": "^8.24.2",
+        "stylelint": "^16.10.0",
+        "stylelint-config-recommended": "^15.0.0"
+    }
+}

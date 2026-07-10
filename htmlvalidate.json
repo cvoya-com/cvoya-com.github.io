@@ -1,0 +1,21 @@
+{
+  "rules": {
+    "close-attr": "error",
+    "close-order": "error",
+    "no-dup-attr": "error",
+    "no-dup-id": "error",
+    "no-implicit-close": "error",
+    "no-missing-references": "error",
+    "element-required-attributes": "error",
+    "void-content": "error",
+    "unrecognized-char-ref": "error",
+    "valid-id": "error",
+    "form-dup-name": "error",
+    "doctype-html": "error",
+    "deprecated": "error",
+    "element-name": "error",
+    "no-utf8-bom": "error",
+    "script-type": "error"
+  },
+  "elements": ["html5"]
+}

@@ -1,0 +1,378 @@
+/* CVOYA open source — extends the cvoya.com system (navy on white, quiet, hairlines). */
+
+:root {
+  --ink: #0b1e3f;          /* deep navy from the wordmark — headings & accents */
+  --ink-soft: #2a3a5a;
+  --text: #111111;         /* near-black for body copy */
+  --muted: #5a6477;        /* 5.6:1 on white — do not lighten */
+  --hairline: rgba(11, 30, 63, 0.10);
+  --hairline-strong: rgba(11, 30, 63, 0.18);
+  --bg: #ffffff;
+  --bg-soft: #f7f8fb;
+  --site-max: 1040px;
+  --radius: 16px;
+
+  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --z-nav: 50;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+a {
+  color: var(--ink);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+a:hover { opacity: 0.7; }
+
+a:focus-visible,
+.project-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 3px;
+  opacity: 1;
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+.container {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 16px;
+  z-index: 100;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus {
+  left: 0;
+  opacity: 1;
+}
+
+/* ── Navigation ── */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid var(--hairline);
+}
+.nav-container {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.nav-logo img { height: 26px; width: auto; }
+.nav-menu {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+.nav-link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--ink); opacity: 1; }
+
+@media (max-width: 640px) {
+  .nav-menu { gap: 18px; }
+  .nav-link { font-size: 0.85rem; }
+  .nav-link-projects { display: none; }
+}
+
+/* ── Hero ── */
+.hero {
+  padding: 88px 0 72px;
+  text-align: center;
+  border-bottom: 1px solid var(--hairline);
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 0%, rgba(11, 30, 63, 0.04), transparent 70%),
+    var(--bg);
+}
+.hero-mark {
+  margin: 0 auto 32px;
+  width: 72px;
+  opacity: 0.95;
+}
+.hero-title {
+  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: var(--ink);
+  margin: 0 auto 24px;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.hero-lede {
+  margin: 0 auto;
+  max-width: 56ch;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+@media (min-width: 768px) {
+  .hero { padding: 128px 0 104px; }
+  .hero-mark { width: 88px; margin-bottom: 40px; }
+}
+
+/* ── Sections ── */
+.projects { padding: 72px 0; }
+@media (min-width: 768px) {
+  .projects { padding: 100px 0; }
+}
+
+.section-lead {
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  color: var(--ink);
+  margin: 0 0 12px;
+  text-wrap: balance;
+}
+.section-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 60ch;
+}
+
+/* ── Project index ── */
+.project-list {
+  list-style: none;
+  margin: 48px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+.project {
+  border-bottom: 1px solid var(--hairline);
+}
+.project-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 36px 0;
+  transition: background-color 0.35s var(--ease-out-quint);
+}
+/* Grid items default to min-width:auto, which lets the wide install
+   command push the whole row past the viewport instead of scrolling. */
+.project-inner > * { min-width: 0; }
+@media (min-width: 720px) {
+  .project-inner {
+    grid-template-columns: 88px 1fr;
+    gap: 40px;
+    padding: 44px 20px;
+    margin: 0 -20px;
+    border-radius: var(--radius);
+  }
+  .project:hover .project-inner { background: var(--bg-soft); }
+}
+
+.project-mark {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: transform 0.45s var(--ease-out-quint);
+}
+.project:hover .project-mark { transform: translateY(-2px) scale(1.04); }
+
+.project-name {
+  font-size: 1.45rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 6px;
+  line-height: 1.2;
+}
+.project-tag {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+.project-body {
+  margin: 0 0 22px;
+  max-width: 62ch;
+  font-size: 0.97rem;
+  color: var(--text);
+  text-wrap: pretty;
+}
+
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.project-meta li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.project-meta li + li::before {
+  content: '';
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--hairline-strong);
+}
+.project-meta strong {
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.project-install {
+  margin: 0 0 22px;
+}
+.project-install-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.project-install pre {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
+  overflow-x: auto;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.project:hover .project-install pre { background: var(--bg); }
+.project-install code {
+  font-family: var(--mono);
+  color: var(--ink-soft);
+  white-space: pre;
+}
+
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 1px solid var(--hairline);
+  padding-bottom: 2px;
+}
+.project-link:hover {
+  border-bottom-color: var(--ink);
+  opacity: 1;
+}
+.project-link .arrow {
+  transition: transform 0.4s var(--ease-out-quint);
+}
+.project-link:hover .arrow { transform: translateX(3px); }
+
+/* ── Footer ── */
+.footer {
+  border-top: 1px solid var(--hairline);
+  padding: 48px 0 40px;
+  background: var(--bg);
+}
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+@media (min-width: 640px) {
+  .footer-bottom {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+}
+.footer-bottom p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.footer-links a {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.footer-links a:hover { color: var(--ink); opacity: 1; }
+
+/* ── Entrance ──
+   Elements are visible by default; the animation only replays the arrival.
+   If animations never run (hidden tab, headless render, reduced motion),
+   the page still renders fully. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mark,
+  .hero-title,
+  .hero-lede {
+    animation: rise 0.9s var(--ease-out-quint) backwards;
+  }
+  .hero-mark { animation-delay: 0.05s; }
+  .hero-title { animation-delay: 0.16s; }
+  .hero-lede { animation-delay: 0.26s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .project:hover .project-mark,
+  .project-link:hover .arrow { transform: none; }
+}
