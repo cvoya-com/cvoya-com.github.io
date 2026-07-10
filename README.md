@@ -1,9 +1,11 @@
 # cvoya-com.github.io
 
-The source of <https://cvoya-com.github.io/> — an index of the code [CVOYA](https://cvoya.com) publishes.
+The source of <https://oss.cvoya.com/> — an index of the code [CVOYA](https://cvoya.com) publishes.
 
 It is a static page: `index.html`, `styles.css`, and `images/`. There is no build step. GitHub Pages
 serves `main` at the repository root, so a merge to `main` is a deploy.
+
+The `CNAME` file binds the site to `oss.cvoya.com`. Do not delete it — `cvoya-com.github.io` redirects there.
 
 ## Local development
 
