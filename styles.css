@@ -1,378 +1,688 @@
-/* CVOYA open source — extends the cvoya.com system (navy on white, quiet, hairlines). */
+/* CVOYA — cool light ground, navy carried in blocks, set in Libre Franklin.
+   The mark is the design; the navy is the depth. */
 
 :root {
-  --ink: #0b1e3f;          /* deep navy from the wordmark — headings & accents */
-  --ink-soft: #2a3a5a;
-  --text: #111111;         /* near-black for body copy */
-  --muted: #5a6477;        /* 5.6:1 on white — do not lighten */
-  --hairline: rgba(11, 30, 63, 0.10);
-  --hairline-strong: rgba(11, 30, 63, 0.18);
-  --bg: #ffffff;
-  --bg-soft: #f7f8fb;
-  --site-max: 1040px;
-  --radius: 16px;
+  /* Ground. A COOL near-white, tinted toward CVOYA's own navy hue (~215).
+     Deliberately not the warm cream/sand/beige band — that is the saturated
+     default, and warmth here would be a lie about the brand. Matches the
+     family: alwyse's surface is the same cool slate. */
+  --ground: #f7f9fc;
+  --surface: #ffffff;
+  --surface-sunken: #e9eef6;
+  --navy: #0b1e3f;
+  --navy-deep: #071733;
 
-  --mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Ink. Measured against --ground:
+     --ink 13.7:1 · --ink-bright 15.3:1 · --ink-muted 5.8:1. All clear AA. */
+  --ink: #1e2b41;
+  --ink-bright: #0b1e3f;
+  --ink-muted: #55637a;
+
+  --hairline: rgb(11 30 63 / 12%);
+  --hairline-strong: rgb(11 30 63 / 32%);
+
+  /* Type. Libre Franklin throughout — a Franklin Gothic revival, the lineage of
+     mid-century science journalism and public-information typography. */
+  --face: 'Libre Franklin', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.375rem;
+  --step-2: 1.75rem;
+  --step-3: 2.25rem;
+  --step-4: clamp(2.5rem, 5vw, 3.5rem);
+
+  --site-max: 1080px;
+  --prose-max: 68ch;
+
+  /* Fluid vertical rhythm. Varied deliberately — not one uniform section pad. */
+  --space-section: clamp(4.5rem, 9vw, 7.5rem);
+  --space-tight: clamp(2.5rem, 5vw, 3.5rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   --z-nav: 50;
+  --z-skip: 100;
 }
 
-* { box-sizing: border-box; }
+/* A navy block re-declares the ink tokens for everything inside it, so its
+   contents invert by inheritance instead of fighting the light defaults.
+   Light-on-dark reads lighter, hence the extra leading. */
+.band-navy,
+.footer {
+  --ground: var(--navy);
+  --surface: var(--navy);
+  --ink: #eef2f8;
+  --ink-bright: #ffffff;
+  --ink-muted: #9fb0c9;
+  --hairline: rgb(238 242 248 / 14%);
+  --hairline-strong: rgb(238 242 248 / 30%);
+  --surface-sunken: var(--navy-deep);
 
-html { scroll-behavior: smooth; }
+  background: var(--navy);
+  color: var(--ink);
+  line-height: 1.75;
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--face);
+  font-size: var(--step-0);
   font-weight: 400;
-  line-height: 1.65;
+  line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
 }
 
-a {
-  color: var(--ink);
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-a:hover { opacity: 0.7; }
+img,
+svg { max-width: 100%; height: auto; display: block; }
 
-a:focus-visible,
-.project-link:focus-visible {
-  outline: 2px solid var(--ink);
+:focus-visible {
+  outline: 2px solid var(--ink-bright);
   outline-offset: 3px;
-  border-radius: 3px;
-  opacity: 1;
-}
-
-img { max-width: 100%; height: auto; display: block; }
-
-.container {
-  max-width: var(--site-max);
-  margin: 0 auto;
-  padding: 0 24px;
+  border-radius: 2px;
 }
 
 .skip-link {
   position: absolute;
   left: -9999px;
-  top: 0;
+  z-index: var(--z-skip);
   background: var(--ink);
-  color: #fff;
-  padding: 10px 16px;
-  z-index: 100;
-  border-radius: 0 0 8px 0;
+  color: var(--ground);
+  text-decoration: none;
 }
 .skip-link:focus {
-  left: 0;
-  opacity: 1;
+  left: 24px;
+  top: 12px;
+  padding: 10px 16px;
+  background: var(--ink);
+  color: var(--ground);
+  font-weight: 500;
 }
 
-/* ── Navigation ── */
+.container {
+  max-width: var(--site-max);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2rem);
+}
+
+/* ── Brand assets ──────────────────────────────────────────
+   The page is light, so navy artwork is the default. Only the navy blocks
+   (footer) need the white variant, and print flips them back.
+   The mark is never recoloured by a CSS filter — it is the subject of a live
+   trademark application and must render exactly as drawn. */
+.on-navy { display: none; }
+.footer .on-navy { display: block; }
+.footer .on-light { display: none; }
+
+/* ── Navigation ────────────────────────────────────────────
+   The CVOYA lockup sits on every page of both domains. That repetition
+   is the point: one source, consistently identified. */
 .navbar {
   position: sticky;
   top: 0;
   z-index: var(--z-nav);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  background: rgb(247 249 252 / 82%);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
   border-bottom: 1px solid var(--hairline);
 }
 .nav-container {
   max-width: var(--site-max);
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 16px clamp(1.25rem, 4vw, 2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
-.nav-logo img { height: 26px; width: auto; }
+.nav-logo img { height: 24px; width: auto; }
+
 .nav-menu {
   display: flex;
-  gap: 28px;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
   align-items: center;
 }
 .nav-link {
-  font-size: 0.9rem;
+  font-size: var(--step--1);
   font-weight: 500;
-  color: var(--ink-soft);
+  color: var(--ink-muted);
+  text-decoration: none;
   letter-spacing: 0.01em;
-  white-space: nowrap;
+  transition: color 0.25s var(--ease-out-expo);
 }
-.nav-link:hover { color: var(--ink); opacity: 1; }
+.nav-link:hover,
+.nav-link[aria-current='page'] { color: var(--ink-bright); }
 
-@media (max-width: 640px) {
-  .nav-menu { gap: 18px; }
-  .nav-link { font-size: 0.85rem; }
-  .nav-link-projects { display: none; }
-}
-
-/* ── Hero ── */
+/* ── Hero ──────────────────────────────────────────────────
+   The mark is the design (PRODUCT.md). Previously 72px and apologetic;
+   here it is given the room it earns. */
 .hero {
-  padding: 88px 0 72px;
+  min-height: min(86vh, 780px);
+  display: flex;
+  align-items: center;
+  padding: var(--space-section) 0;
   text-align: center;
-  border-bottom: 1px solid var(--hairline);
   background:
-    radial-gradient(ellipse 60% 60% at 50% 0%, rgba(11, 30, 63, 0.04), transparent 70%),
-    var(--bg);
+    radial-gradient(ellipse 65% 55% at 50% 36%, var(--surface), transparent 70%),
+    var(--ground);
 }
 .hero-mark {
-  margin: 0 auto 32px;
-  width: 72px;
-  opacity: 0.95;
+  width: clamp(170px, 30vh, 300px);
+  margin: 0 auto clamp(2rem, 4vh, 3rem);
 }
 .hero-title {
-  font-size: clamp(1.9rem, 4.5vw, 3rem);
+  font-size: var(--step-4);
   font-weight: 600;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
-  color: var(--ink);
-  margin: 0 auto 24px;
+  letter-spacing: -0.028em;
+  line-height: 1.1;
+  color: var(--ink-bright);
+  margin: 0 auto;
   max-width: 18ch;
   text-wrap: balance;
 }
 .hero-lede {
-  margin: 0 auto;
-  max-width: 56ch;
-  font-size: 1.05rem;
-  color: var(--ink-soft);
+  margin: clamp(1.5rem, 3vw, 2rem) auto 0;
+  max-width: 46ch;
+  color: var(--ink-muted);
+  font-size: var(--step-1);
+  line-height: 1.6;
   text-wrap: pretty;
 }
-@media (min-width: 768px) {
-  .hero { padding: 128px 0 104px; }
-  .hero-mark { width: 88px; margin-bottom: 40px; }
+
+/* ── The navy band ─────────────────────────────────────────
+   The one committed block of colour. The page goes surface → depth → surface,
+   which is what the name means. Light is a choice here, not a default. */
+.band-navy {
+  padding: clamp(4rem, 8vw, 6.5rem) 0;
+  text-align: center;
+}
+.band-quote {
+  margin: 0 auto;
+  max-width: 30ch;
+}
+.band-quote blockquote {
+  margin: 0 0 1rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--ink-bright);
+  text-wrap: balance;
+}
+.band-quote blockquote p { margin: 0; }
+.band-quote figcaption {
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+  letter-spacing: 0.03em;
 }
 
-/* ── Sections ── */
-.projects { padding: 72px 0; }
-@media (min-width: 768px) {
-  .projects { padding: 100px 0; }
+/* ── Sections ──────────────────────────────────────────────
+   No uppercase tracked eyebrows. The headings carry it alone. */
+.section {
+  padding: var(--space-section) 0;
+  border-top: 1px solid var(--hairline);
 }
+.section-quiet { padding: var(--space-tight) 0; }
 
 .section-lead {
-  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
-  font-weight: 500;
-  letter-spacing: -0.015em;
-  line-height: 1.35;
-  color: var(--ink);
-  margin: 0 0 12px;
+  font-size: var(--step-3);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.2;
+  color: var(--ink-bright);
+  margin: 0 0 1.25rem;
+  max-width: 24ch;
   text-wrap: balance;
 }
 .section-sub {
   margin: 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-  max-width: 60ch;
-}
-
-/* ── Project index ── */
-.project-list {
-  list-style: none;
-  margin: 48px 0 0;
-  padding: 0;
-  border-top: 1px solid var(--hairline);
-}
-.project {
-  border-bottom: 1px solid var(--hairline);
-}
-.project-inner {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-  padding: 36px 0;
-  transition: background-color 0.35s var(--ease-out-quint);
-}
-/* Grid items default to min-width:auto, which lets the wide install
-   command push the whole row past the viewport instead of scrolling. */
-.project-inner > * { min-width: 0; }
-@media (min-width: 720px) {
-  .project-inner {
-    grid-template-columns: 88px 1fr;
-    gap: 40px;
-    padding: 44px 20px;
-    margin: 0 -20px;
-    border-radius: var(--radius);
-  }
-  .project:hover .project-inner { background: var(--bg-soft); }
-}
-
-.project-mark {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  transition: transform 0.45s var(--ease-out-quint);
-}
-.project:hover .project-mark { transform: translateY(-2px) scale(1.04); }
-
-.project-name {
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  color: var(--ink);
-  margin: 0 0 6px;
-  line-height: 1.2;
-}
-.project-tag {
-  margin: 0 0 16px;
-  font-size: 0.95rem;
-  color: var(--ink-soft);
-}
-.project-body {
-  margin: 0 0 22px;
-  max-width: 62ch;
-  font-size: 0.97rem;
-  color: var(--text);
+  max-width: var(--prose-max);
+  color: var(--ink-muted);
+  font-size: var(--step-1);
+  line-height: 1.6;
   text-wrap: pretty;
 }
 
-.project-meta {
+.prose { max-width: var(--prose-max); }
+.prose p {
+  margin: 0 0 1.25rem;
+  text-wrap: pretty;
+}
+.prose p:last-child { margin-bottom: 0; }
+.prose strong { color: var(--ink-bright); font-weight: 600; }
+.prose em { font-style: italic; }
+.prose a,
+.section-sub a,
+.hero-lede a {
+  color: var(--ink-bright);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.25s var(--ease-out-expo);
+}
+.prose a:hover,
+.section-sub a:hover,
+.hero-lede a:hover { text-decoration-color: currentcolor; }
+
+/* ── What we build ─────────────────────────────────────────
+   Rows, not a card grid. Two columns on wide viewports: the name and
+   its source attribution on the left, the argument on the right. */
+.entries {
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin: 0 0 20px;
-  padding: 0;
-  list-style: none;
-  font-size: 0.8rem;
-  color: var(--muted);
+  flex-direction: column;
 }
-.project-meta li {
-  display: flex;
-  align-items: center;
-  gap: 14px;
+.entry {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem 3rem;
+  padding: clamp(2.25rem, 4.5vw, 3.25rem) 0;
+  border-top: 1px solid var(--hairline);
 }
-.project-meta li + li::before {
-  content: '';
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--hairline-strong);
-}
-.project-meta strong {
-  font-weight: 500;
-  color: var(--ink-soft);
+.entry:last-child { border-bottom: 1px solid var(--hairline); }
+
+@media (min-width: 800px) {
+  .entry {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
 }
 
-.project-install {
-  margin: 0 0 22px;
+.entry-id {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  gap: 0.875rem;
 }
-.project-install-label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-bottom: 8px;
+.entry-logo {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
-.project-install pre {
+.entry-name {
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.25;
+  color: var(--ink-bright);
   margin: 0;
-  padding: 12px 16px;
-  background: var(--bg-soft);
-  border: 1px solid var(--hairline);
-  border-radius: 8px;
-  overflow-x: auto;
-  font-size: 0.82rem;
-  line-height: 1.5;
 }
-.project:hover .project-install pre { background: var(--bg); }
-.project-install code {
-  font-family: var(--mono);
-  color: var(--ink-soft);
+.entry-name a {
+  color: inherit;
+  text-decoration: none;
+}
+.entry-name a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* CVOYA named as the source of the goods, next to the goods. */
+.entry-source {
+  margin: 0.25rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+.entry-body { margin: 0; }
+.entry-body p {
+  margin: 0 0 1rem;
+  text-wrap: pretty;
+}
+.entry-body p:last-of-type { margin-bottom: 1.5rem; }
+.entry-body a {
+  color: var(--ink-bright);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 3px;
+}
+.entry-body a:hover { text-decoration-color: currentcolor; }
+
+.entry-meta {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+.entry-meta strong { color: var(--ink); font-weight: 500; }
+
+.entry-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+}
+.entry-link {
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--ink-bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline-strong);
+  padding-bottom: 3px;
+  transition: border-color 0.25s var(--ease-out-expo);
+}
+.entry-link:hover { border-bottom-color: var(--ink-bright); }
+.entry-link .arrow {
+  display: inline-block;
+  transition: transform 0.35s var(--ease-out-expo);
+}
+.entry-link:hover .arrow { transform: translateX(3px); }
+
+/* ── Code ──────────────────────────────────────────────────
+   Mono is confined to things that are literally code: a package
+   identifier, a terminal command. It is never decoration, and never
+   shorthand for "technical". */
+code {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  color: var(--ink-bright);
+}
+
+.install { margin: 0 0 1.5rem; }
+.install-label {
+  display: block;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+  margin-bottom: 0.5rem;
+}
+.install pre {
+  margin: 0;
+  padding: 0.875rem 1rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  overflow-x: auto;
+}
+.install code {
+  font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--ink);
   white-space: pre;
 }
 
-.project-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 18px;
+/* ── Callout ───────────────────────────────────────────────
+   Full hairline border. No side-stripe. */
+.callout {
+  margin: 1.75rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface-sunken);
+  border: 1px solid var(--hairline);
+  border-radius: 8px;
 }
-.project-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink);
-  border-bottom: 1px solid var(--hairline);
-  padding-bottom: 2px;
-}
-.project-link:hover {
-  border-bottom-color: var(--ink);
-  opacity: 1;
-}
-.project-link .arrow {
-  transition: transform 0.4s var(--ease-out-quint);
-}
-.project-link:hover .arrow { transform: translateX(3px); }
+.callout p { margin: 0; color: var(--ink); }
 
-/* ── Footer ── */
+/* ── Interior page header ──────────────────────────────────*/
+.page-hero {
+  padding: clamp(3.5rem, 7vw, 5.5rem) 0 clamp(2rem, 4vw, 3rem);
+}
+.page-hero h1 {
+  font-size: clamp(2rem, 4vw, 2.875rem);
+  font-weight: 600;
+  letter-spacing: -0.026em;
+  line-height: 1.15;
+  color: var(--ink-bright);
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+.page-hero .subtitle {
+  margin: 1.25rem 0 0;
+  max-width: 52ch;
+  color: var(--ink-muted);
+  font-size: var(--step-1);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.page-hero .effective-date {
+  margin: 1.5rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+}
+
+.page-content { padding: 0 0 var(--space-section); }
+.page-narrow { max-width: 720px; }
+.page-narrow h2 {
+  font-size: var(--step-2);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  color: var(--ink-bright);
+  margin: clamp(2.5rem, 5vw, 3.25rem) 0 1rem;
+  padding-bottom: 0.625rem;
+  border-bottom: 1px solid var(--hairline);
+  text-wrap: balance;
+}
+.page-narrow h2:first-of-type { margin-top: 0; }
+.page-narrow h3 {
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--ink-bright);
+  margin: 2rem 0 0.75rem;
+}
+.page-narrow p,
+.page-narrow ul { text-wrap: pretty; }
+.page-narrow p { margin: 0 0 1.125rem; }
+.page-narrow ul { margin: 0 0 1.125rem; padding-left: 1.25rem; }
+.page-narrow li { margin-bottom: 0.5rem; }
+.page-narrow li::marker { color: var(--ink-muted); }
+.page-narrow strong { color: var(--ink-bright); font-weight: 600; }
+.page-narrow a {
+  color: var(--ink-bright);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.25s var(--ease-out-expo);
+}
+.page-narrow a:hover { text-decoration-color: currentcolor; }
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  color: var(--ink-muted);
+  font-size: var(--step--1);
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out-expo);
+}
+.back-link::before { content: '← '; }
+.back-link:hover { color: var(--ink-bright); }
+
+/* ── Contact ───────────────────────────────────────────────*/
+.contact-list {
+  list-style: none;
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+.contact-list li {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--hairline);
+}
+.contact-list li:last-child { border-bottom: 1px solid var(--hairline); }
+.contact-role {
+  margin: 0 0 0.25rem;
+  font-size: var(--step-1);
+  font-weight: 600;
+  color: var(--ink-bright);
+}
+.contact-list p:not(.contact-role) {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: var(--step--1);
+}
+.contact-list a {
+  color: var(--ink-bright);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 3px;
+}
+.contact-list a:hover { text-decoration-color: currentcolor; }
+
+/* ── Footer ────────────────────────────────────────────────*/
 .footer {
   border-top: 1px solid var(--hairline);
-  padding: 48px 0 40px;
-  background: var(--bg);
+  background: var(--navy-deep);
+  padding: clamp(3rem, 6vw, 4.5rem) 0 2rem;
 }
-.footer-bottom {
+.footer-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+.footer-mark {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
+  gap: 0.875rem;
+  max-width: 34ch;
 }
-@media (min-width: 640px) {
-  .footer-bottom {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
+.footer-mark img { height: 22px; width: auto; }
+.footer-blurb {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+  line-height: 1.6;
+}
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 2rem;
+}
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+.footer-nav-col a {
+  font-size: var(--step--1);
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out-expo);
+}
+.footer-nav-col a:hover { color: var(--ink-bright); }
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--hairline);
 }
 .footer-bottom p {
   margin: 0;
-  font-size: 0.8rem;
-  color: var(--muted);
+  font-size: var(--step--1);
+  color: var(--ink-muted);
 }
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 18px;
+.footer-bottom a {
+  color: var(--ink-muted);
+  text-decoration: none;
+  transition: color 0.25s var(--ease-out-expo);
 }
-.footer-links a {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-.footer-links a:hover { color: var(--ink); opacity: 1; }
+.footer-bottom a:hover { color: var(--ink-bright); }
 
-/* ── Entrance ──
-   Elements are visible by default; the animation only replays the arrival.
-   If animations never run (hidden tab, headless render, reduced motion),
-   the page still renders fully. */
+/* ── Motion ────────────────────────────────────────────────
+   One page-load sequence, hero only. Nothing animates on scroll.
+   The animation is applied ONLY inside no-preference, and uses
+   `backwards` fill — so if it never runs, the content is already
+   visible. Visibility is never gated on a transition. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-mark,
+  .hero-title,
+  .hero-lede,
+  .hero-quote {
+    animation: rise 900ms var(--ease-out-expo) backwards;
+  }
+  .hero-mark { animation-duration: 1100ms; }
+  .hero-title { animation-delay: 120ms; }
+  .hero-lede { animation-delay: 220ms; }
+  .hero-quote { animation-delay: 320ms; }
+}
+
 @keyframes rise {
   from {
     opacity: 0;
     transform: translateY(14px);
   }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .hero-mark,
-  .hero-title,
-  .hero-lede {
-    animation: rise 0.9s var(--ease-out-quint) backwards;
+/* ── Print ─────────────────────────────────────────────────
+   A navy-drenched page would print as a solid block of ink. Invert:
+   navy on white, mark and wordmark flipped to the dark variants. */
+/* ── Print ─────────────────────────────────────────────────
+   The page is already light, so print only has to flatten the two navy blocks
+   — otherwise they dump a solid rectangle of ink — and swap the white artwork
+   inside them back to navy. This matters: a printed or PDF'd page is how a
+   specimen gets read. */
+@media print {
+  :root {
+    --ground: #fff;
+    --surface: #fff;
+    --ink: #111;
+    --ink-bright: #0b1e3f;
+    --ink-muted: #454f61;
+    --hairline: rgb(11 30 63 / 25%);
+    --hairline-strong: rgb(11 30 63 / 45%);
   }
-  .hero-mark { animation-delay: 0.05s; }
-  .hero-title { animation-delay: 0.16s; }
-  .hero-lede { animation-delay: 0.26s; }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * {
-    animation: none !important;
-    transition-duration: 0.01ms !important;
+  body { background: #fff; }
+
+  /* Flatten the navy blocks; restore dark-on-light ink inside them. */
+  .band-navy,
+  .footer {
+    --ground: #fff;
+    --surface: #fff;
+    --ink: #111;
+    --ink-bright: #0b1e3f;
+    --ink-muted: #454f61;
+    --hairline: rgb(11 30 63 / 25%);
+    --hairline-strong: rgb(11 30 63 / 45%);
+
+    background: none;
+    color: #111;
   }
-  .project:hover .project-mark,
-  .project-link:hover .arrow { transform: none; }
+  .band-navy { border-top: 1px solid var(--hairline); }
+
+  /* ...which means the white artwork inside them must flip back to navy. */
+  .footer .on-navy { display: none; }
+  .footer .on-light { display: block; }
+
+  .navbar {
+    position: static;
+    background: none;
+    backdrop-filter: none;
+  }
+  .nav-menu,
+  .skip-link,
+  .back-link { display: none; }
+
+  .hero {
+    min-height: 0;
+    background: none;
+    page-break-after: avoid;
+  }
+  .hero-mark { width: 150px; }
+
+  .install pre { background: #f5f6f8; }
+
+  a { text-decoration: underline; }
 }
