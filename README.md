@@ -1,11 +1,14 @@
 # cvoya-com.github.io
 
-The source of <https://oss.cvoya.com/> — an index of the code [CVOYA](https://cvoya.com) publishes.
+The root of <https://oss.cvoya.com/> redirects to the canonical
+[CVOYA software catalog](https://cvoya.com/software).
 
-It is a static page: `index.html`, `styles.css`, and `images/`. There is no build step. GitHub Pages
-serves `main` at the repository root, so a merge to `main` is a deploy.
+It is a static redirect in `index.html`; the catalog itself lives in the
+[`cvoya-com/web`](https://github.com/cvoya-com/web) repository. GitHub Pages serves `main` at the
+repository root, so a merge to `main` is a deploy.
 
-The `CNAME` file binds the site to `oss.cvoya.com`. Do not delete it — `cvoya-com.github.io` redirects there.
+The `CNAME` file binds the organization Pages domain to `oss.cvoya.com`. Do not delete it:
+project Pages sites, including the CVOYA Graph documentation under `/graph/`, depend on that domain.
 
 ## Local development
 
@@ -26,11 +29,6 @@ Both are bugs-only rulesets — structural HTML errors and real CSS faults, not 
 
 ## Conventions
 
-- **Design comes from [cvoya.com](https://cvoya.com).** Same tokens (navy `#0b1e3f` on white, Inter,
-  hairline rules), same restraint. The wider design system and the other CVOYA sites live in the
-  `cvoya-com/web` repository.
-- **Name each licence.** Only CVOYA Graph is open source (Apache 2.0). Spring Voyage is
-  *source-available* under BSL 1.1 and converts to Apache 2.0 on 2030-04-10. Do not call the pair
-  "open source" collectively.
-- **No trademark notices.** No ™, no ®, no trademark sections.
+- Keep the root a redirect. Do not duplicate the software catalog here.
+- Do not remove `CNAME`; project Pages sites rely on the custom organization domain.
 - `.nojekyll` is deliberate — it stops Pages running the files through Jekyll.
