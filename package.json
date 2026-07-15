@@ -2,7 +2,7 @@
     "name": "cvoya-com.github.io",
     "version": "0.1.0",
     "private": true,
-    "description": "Index of the code CVOYA publishes. Served at https://cvoya-com.github.io/.",
+    "description": "Redirects oss.cvoya.com to the canonical CVOYA software catalog.",
     "scripts": {
         "validate": "npm run lint:html && npm run lint:css",
         "lint:html": "html-validate --config htmlvalidate.json index.html",
