@@ -18,7 +18,7 @@ npx http-server . -p 8765 -c-1     # then open http://localhost:8765/
 
 ## Validation
 
-CI runs the same two checks on every push and pull request. Run them locally before pushing:
+Run the HTML and CSS checks locally before pushing:
 
 ```bash
 npm install
